@@ -1,22 +1,23 @@
 package ru.bvkuchin.fileServer;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class Handler implements Runnable {
 
     private boolean running;
-    private DataInputStream inputStream;
-    private DataOutputStream outputStream;
+    private byte[] buf;
+    private InputStream inputStream;
+    private OutputStream outputStream;
     private Socket socket;
 
     public Handler(Socket socket) throws IOException {
+        this.buf = new byte[8192];
         running = true;
         this.socket = socket;
-        this.inputStream = new DataInputStream(socket.getInputStream());
-        this.outputStream = new DataOutputStream(socket.getOutputStream());
+        this.inputStream = socket.getInputStream();
+        this.outputStream = socket.getOutputStream();
     }
 
     public void stop() throws IOException {
@@ -31,13 +32,14 @@ public class Handler implements Runnable {
         while (running) {
             String message = null;
             try {
-
-                message = inputStream.readUTF();
+                int read = inputStream.read(buf);
+                message = new String(buf, 0, read);
 //                System.out.println("Received: " + message.trim());
                 if (message.equals("stop")) {
                     stop();
                 }
-                outputStream.writeUTF("echo: " + message);
+                String serverReplyMsg = "echo: " + message;
+                outputStream.write(serverReplyMsg.getBytes(StandardCharsets.UTF_8));
 
             } catch (IOException e) {
                 e.printStackTrace();
