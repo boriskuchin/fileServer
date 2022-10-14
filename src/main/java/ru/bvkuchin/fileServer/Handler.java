@@ -13,7 +13,7 @@ public class Handler implements Runnable {
     private Socket socket;
 
     public Handler(Socket socket) throws IOException {
-        this.buf = new byte[8192];
+        this.buf = new byte[1];
         running = true;
         this.socket = socket;
         this.inputStream = socket.getInputStream();
