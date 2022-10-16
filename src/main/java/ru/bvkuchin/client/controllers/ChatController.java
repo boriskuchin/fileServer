@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import ru.bvkuchin.client.IONet;
 
@@ -20,6 +21,7 @@ public class ChatController {
     public TextField textField;
     public Button sendButton;
     public Button refreshButton;
+    public MenuItem quitButton;
     @FXML
     private ResourceBundle resources;
 
@@ -43,9 +45,10 @@ public class ChatController {
     }
 
     public void sendText(ActionEvent actionEvent) throws IOException {
-        net.sendMsg(textField.getText());
-        textField.setText("");
-
+        String item = listView.getSelectionModel().getSelectedItem();
+        File file = new File(item);
+        net.sendMsg("/filename>>" + file.getName());
+        net.sendFile(file);
     }
 
     public void refreshList(ActionEvent actionEvent) {
@@ -58,6 +61,12 @@ public class ChatController {
                 }
             }
         }
+
+    }
+
+    public void quitAction(ActionEvent actionEvent) throws IOException {
+     net.close();
+        System.exit(0);
 
     }
 }

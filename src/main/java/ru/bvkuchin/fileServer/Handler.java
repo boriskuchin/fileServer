@@ -12,8 +12,10 @@ public class Handler implements Runnable {
     private OutputStream outputStream;
     private Socket socket;
 
+    private OutputStream fileOs;
+
     public Handler(Socket socket) throws IOException {
-        this.buf = new byte[8192];
+        this.buf = new byte[1024*8];
         running = true;
         this.socket = socket;
         this.inputStream = socket.getInputStream();
@@ -29,28 +31,18 @@ public class Handler implements Runnable {
 
     @Override
     public void run() {
-        while (running) {
-            String message = null;
-            try {
+        try {
+            while (running) {
                 int read = inputStream.read(buf);
-                message = new String(buf, 0, read);
-//                System.out.println("Received: " + message.trim());
-                if (message.equals("stop")) {
-                    stop();
+                if (new String(buf, 0, read).split(">>")[0].equals("/filename")) {
+                    fileOs = new FileOutputStream("/home/boris/geekbrains/fileServer/src/main/resources/ru/bvkuchin/fileServer/" + new String(buf, 0, read).split(">>")[1]);
+                } else {
+                    fileOs.write(buf, 0, read);
+                    System.out.println(read + "байт получено");
                 }
-                String serverReplyMsg = "echo: " + message;
-                outputStream.write(serverReplyMsg.getBytes(StandardCharsets.UTF_8));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                try {
-                    stop();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-
             }
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

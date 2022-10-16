@@ -2,9 +2,7 @@ package ru.bvkuchin.client;
 
 import ru.bvkuchin.client.controllers.ChatController;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -21,7 +19,7 @@ public class IONet {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
-        this.buffer = new byte[8192];
+        this.buffer = new byte[1024*8];
         Thread readThread = new Thread(this::readMessage);
         readThread.setDaemon(true);
         readThread.start();
@@ -42,6 +40,21 @@ public class IONet {
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendFile(File file) throws FileNotFoundException {
+        int read;
+        InputStream is = new FileInputStream(file);
+        try {
+            while ((read = is.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, read);
+                System.out.println(read + "байт передано. Осталось " + is.available());
+
+            }
+            System.out.println("фаил отправлен");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
