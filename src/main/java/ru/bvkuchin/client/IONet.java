@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class IONet {
 
     private final byte[] buffer;
-    private final ChatController chatcontroller;
+    private ChatController chatcontroller;
     private OutputStream outputStream;
     private InputStream inputStream;
     private Socket socket;
@@ -38,7 +38,8 @@ public class IONet {
             while (true) {
                 int read = inputStream.read(buffer);
                 String message = new String(buffer, 0, read);
-                chatcontroller.addText(message);
+                chatcontroller.addTextToList(message);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

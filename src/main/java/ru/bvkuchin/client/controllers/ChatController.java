@@ -1,4 +1,5 @@
 package ru.bvkuchin.client.controllers;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
@@ -18,6 +19,7 @@ public class ChatController {
     public ListView<String> listView;
     public TextField textField;
     public Button sendButton;
+    public Button refreshButton;
     @FXML
     private ResourceBundle resources;
 
@@ -36,13 +38,26 @@ public class ChatController {
         }
     }
 
-    public void addText(String message) {
+    public void addTextToList(String message) {
         Platform.runLater(() -> listView.getItems().add(message));
     }
 
     public void sendText(ActionEvent actionEvent) throws IOException {
         net.sendMsg(textField.getText());
         textField.setText("");
+
+    }
+
+    public void refreshList(ActionEvent actionEvent) {
+        String pathString = textField.getText();
+        File folder = new File(pathString);
+        if (folder.isDirectory()) {
+            for (File fileEntry : folder.listFiles()) {
+                if (!fileEntry.isDirectory()) {
+                    addTextToList(fileEntry.getAbsolutePath());
+                }
+            }
+        }
 
     }
 }
