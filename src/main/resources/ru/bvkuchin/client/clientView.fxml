@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="608.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.bvkuchin.client.controllers.ChatController">
+  <children>
+    <MenuBar prefHeight="12.0" prefWidth="640.0" VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem fx:id="quitButton" onAction="#quitAction" mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="544.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+         <children>
+            <ListView fx:id="listView" prefHeight="464.0" prefWidth="398.0" AnchorPane.bottomAnchor="169.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <SplitPane dividerPositions="0.48870155050526914" layoutX="-1.0" layoutY="550.0" prefHeight="82.0" prefWidth="398.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <Button fx:id="refreshButton" layoutX="106.0" layoutY="27.0" mnemonicParsing="false" onAction="#refreshList" text="Refresh" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <Button fx:id="sendButton" layoutX="50.0" layoutY="34.0" mnemonicParsing="false" onAction="#sendText" prefHeight="81.0" prefWidth="132.0" text="Send" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+            <TextField fx:id="textField" layoutX="2.0" layoutY="500.0" prefHeight="45.0" prefWidth="392.0" />
+            <Label layoutX="22.0" layoutY="467.0" prefHeight="29.0" prefWidth="347.0" text="Введите путь к папке и нажмите Refresh:" />
+         </children>
+    </AnchorPane>
+  </children>
+</VBox>
